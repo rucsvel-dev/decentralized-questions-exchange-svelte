@@ -1,17 +1,15 @@
 <script>
   import { onMount } from 'svelte'
-  import GUN from 'gun'
+  import { gun } from "../gun"
 
   import Question from './Question.svelte';
-
-  const db = GUN()
 
   let questionTitleInput = ''
   let questionDescriptionInput = ''
   let questions = []
 
   onMount(() => {
-    db.get('questions')
+    gun.get('questions')
       .map()
       .once(async (question, id) => {
         questions = [...questions, question]
@@ -19,7 +17,7 @@
   })
 
   const createQuestion = async () => {
-    db.get('questions').get(questionTitleInput).put({ isProved: false, questionId: questionTitleInput, questionDescriptionInput })
+    gun.get('questions').get(questionTitleInput).put({ isProved: false, questionId: questionTitleInput, questionDescriptionInput })
   }
 </script>
 
