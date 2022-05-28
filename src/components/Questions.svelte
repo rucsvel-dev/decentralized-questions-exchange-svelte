@@ -1,23 +1,26 @@
 <script>
   import { onMount } from 'svelte'
-  import { gun } from "../gun"
+  import GUN from 'gun'
+  import 'gun/axe';
 
   import Question from './Question.svelte';
+
+  const db = GUN()
 
   let questionTitleInput = ''
   let questionDescriptionInput = ''
   let questions = []
 
   onMount(() => {
-    gun.get('questions')
+    db.get('questions')
       .map()
       .once(async (question, id) => {
         questions = [...questions, question]
       })
   })
-
+console.log('===== updated')
   const createQuestion = async () => {
-    gun.get('questions').get(questionTitleInput).put({ isProved: false, questionId: questionTitleInput, questionDescriptionInput })
+    db.get('questions').get(questionTitleInput).put({ isProved: false, questionId: questionTitleInput, questionDescriptionInput })
   }
 </script>
 
